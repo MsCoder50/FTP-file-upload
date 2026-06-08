@@ -1,5 +1,5 @@
 from flask import Flask,jsonify,request
-import ftplib
+from ftplib import FTP_TLS
 import os
 from flask_cors import CORS
 
@@ -19,7 +19,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def upload(file_path, SERVER,USERNAME,PASSWORD):
     filename = os.path.basename(file_path)
-    with ftplib.FTP(SERVER, USERNAME, PASSWORD) as ftp:
+    with FTP_TLS(SERVER, USERNAME, PASSWORD) as ftp:
         with open(file_path, "rb") as file_object:
             # Use 'STOR' command followed by the target filename on the server
             ftp.storbinary(f"STOR {filename}", file_object)
@@ -67,14 +67,14 @@ def test_ftp():
     if not host or not user or not password:
         return jsonify({"error": "FTP credentials missing"}), 400
 
-    ftp = ftplib.FTP()
+    ftp = FTP_TLS()
     try:
         ftp.connect(host,21)
         ftp.login(user,password)
         ftp.quit()
         return jsonify({"message": "FTP connection successful"}), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": e}), 500
 
 if(__name__ == "__main__"):
     app.run(debug=True,port=8080)
