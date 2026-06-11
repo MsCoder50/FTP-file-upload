@@ -69,6 +69,12 @@ python3 app.py
 ```
 The backend server will run continuously on `http://127.0.0.1:8080`.
 
+### 3. Run Frontend 
+```bash
+cd Frontend
+npm run dev
+```
+Frontend will be served at localhost:3000
 ---
 
 ## ⚠️ Important FTP Server Configuration (e.g., FileZilla Server)
